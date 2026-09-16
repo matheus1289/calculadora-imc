@@ -3,60 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculo IMC</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <script src="js/script.js" defer></script>
-    <!-- link font -->
+    <meta name="description" content="Calculadora de IMC (Índice de Massa Corporal) profissional. Descubra seu IMC instantaneamente e entenda o que ele significa para sua saúde.">
+    <title>Calculadora de IMC — Índice de Massa Corporal</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,700;1,300;1,700&display=swap" rel="stylesheet">
-    <!-- link icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <section class="container">
-        <div class="img">
-            <img src="img/undraw_personal_trainer_re_cnua.svg" alt="img-imc">
-        </div>
-        <div class="conteudo">
-            <h1>Calculadora - <span>IMC</span></h1>
-            <form class="form">
-                <label class="label" for="peso"> Peso em KG </label>
-                <div class="peso">
-                    <i class="fa-solid fa-weight-hanging"></i>
-                    <input id="peso" class="input" name="peso" type="number" required placeholder="Peso:">
-                    <span>KG</span>
-                </div>
-                <label class="label" for="altura"> Altura em metros</label>
-                <div class="altura">
-                    <i class="fa-solid fa-ruler"></i>
-                    <input id="altura" class="input" type="number" step="0.01" name="altura" placeholder="Altura: " required>
-                    <span>m</span>
-                </div>
-                <button id="botao" type="submit">Calcular</button>
 
-                <div  class="container-menor hide">
-                    <hr>
-                    <div class="resultado">
-                        <div class="imc-result">
-                            
-                            <p class="imc-numero"></p>
-                            <p>Seu IMC</p>
+    <!-- Background particles -->
+    <div class="bg-particles" aria-hidden="true">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <main class="app-wrapper">
+
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                    <span class="logo-title">IMC<span class="logo-accent">Pro</span></span>
+                    <span class="logo-sub">Calculadora de Saúde</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main card -->
+        <div class="card-grid">
+
+            <!-- Left: Form -->
+            <section class="card form-card" aria-label="Formulário de cálculo do IMC">
+                <div class="card-header">
+                    <h1 class="card-title">Calcule seu <span class="accent">IMC</span></h1>
+                    <p class="card-subtitle">Insira seus dados abaixo para obter seu Índice de Massa Corporal</p>
+                </div>
+
+                <form class="form" id="imc-form" novalidate>
+
+                    <!-- Peso -->
+                    <div class="field-group">
+                        <label class="field-label" for="peso">
+                            <i class="fa-solid fa-weight-hanging label-icon"></i>
+                            Peso
+                        </label>
+                        <div class="input-wrapper" id="peso-wrapper">
+                            <input
+                                id="peso"
+                                class="field-input"
+                                name="peso"
+                                type="number"
+                                min="1"
+                                max="500"
+                                step="0.1"
+                                placeholder="Ex: 70"
+                                aria-describedby="peso-unit"
+                                autocomplete="off"
+                                required
+                            >
+                            <span class="input-unit" id="peso-unit">kg</span>
                         </div>
-                        <div>
-                            <p id="info"> </p>
+                        <span class="field-error" id="peso-error" role="alert"></span>
+                    </div>
+
+                    <!-- Altura -->
+                    <div class="field-group">
+                        <label class="field-label" for="altura">
+                            <i class="fa-solid fa-ruler-vertical label-icon"></i>
+                            Altura
+                        </label>
+                        <div class="input-wrapper" id="altura-wrapper">
+                            <input
+                                id="altura"
+                                class="field-input"
+                                name="altura"
+                                type="number"
+                                min="0.5"
+                                max="3"
+                                step="0.01"
+                                placeholder="Ex: 1.75"
+                                aria-describedby="altura-unit"
+                                autocomplete="off"
+                                required
+                            >
+                            <span class="input-unit" id="altura-unit">m</span>
+                        </div>
+                        <span class="field-error" id="altura-error" role="alert"></span>
+                    </div>
+
+                    <button id="btn-calcular" type="submit">
+                        <span class="btn-text">Calcular IMC</span>
+                        <i class="fa-solid fa-arrow-right btn-icon"></i>
+                    </button>
+
+                    <button id="btn-limpar" type="button" class="btn-secondary hidden">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        Recalcular
+                    </button>
+
+                </form>
+
+
+
+            </section>
+
+            <!-- Right: Result -->
+            <section class="card result-card" id="result-section" aria-label="Resultado do IMC" aria-live="polite">
+
+                <!-- Placeholder state -->
+                <div class="result-placeholder" id="result-placeholder">
+                    <div class="placeholder-illustration">
+                        <img src="img/undraw_personal_trainer_re_cnua.svg" alt="Ilustração de treino pessoal" loading="lazy">
+                    </div>
+                    <p class="placeholder-text">Preencha o formulário ao lado para descobrir seu IMC</p>
+                </div>
+
+                <!-- Result state -->
+                <div class="result-content hidden" id="result-content">
+
+                    <div class="result-top">
+                        <h2 class="result-heading">Seu Resultado</h2>
+
+                        <!-- Gauge -->
+                        <div class="gauge-wrapper" aria-hidden="true">
+                            <svg class="gauge-svg" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#60a5fa"/>
+                                        <stop offset="30%" style="stop-color:#34d399"/>
+                                        <stop offset="55%" style="stop-color:#fbbf24"/>
+                                        <stop offset="75%" style="stop-color:#f97316"/>
+                                        <stop offset="90%" style="stop-color:#ef4444"/>
+                                        <stop offset="100%" style="stop-color:#7f1d1d"/>
+                                    </linearGradient>
+                                </defs>
+                                <!-- Track -->
+                                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#ffffff10" stroke-width="14" stroke-linecap="round"/>
+                                <!-- Colored arc -->
+                                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="0" opacity="0.35"/>
+                                <!-- Needle -->
+                                <line id="gauge-needle" x1="100" y1="100" x2="100" y2="28" stroke="white" stroke-width="3" stroke-linecap="round" transform="rotate(0, 100, 100)"/>
+                                <circle cx="100" cy="100" r="6" fill="white"/>
+                            </svg>
+                        </div>
+
+                        <!-- IMC value -->
+                        <div class="imc-badge" id="imc-badge">
+                            <span class="imc-value" id="imc-value">--</span>
+                            <span class="imc-label">IMC</span>
+                        </div>
+
+                        <!-- Category chip -->
+                        <div class="category-chip" id="category-chip">
+                            <i class="fa-solid fa-circle-check chip-icon" id="chip-icon"></i>
+                            <span id="category-text">--</span>
                         </div>
                     </div>
-                    <hr>
-                    <a href="https://brasilescola.uol.com.br/educacao-fisica/Indice-massa-corporal-imc.htm#:~:text=O%20%C3%8Dndice%20de%20Massa%20Corporal,e%20profissionais%20de%20Educa%C3%A7%C3%A3o%20F%C3%ADsica." target="_blank">Mais Informaçôes sobre IMC <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+
+                    <!-- Info message -->
+                    <div class="info-box" id="info-box">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <p id="info-text"></p>
+                    </div>
+
+                    <!-- Stats row -->
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <i class="fa-solid fa-weight-hanging stat-icon"></i>
+                            <span class="stat-label">Peso</span>
+                            <span class="stat-value" id="stat-peso">--</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-ruler-vertical stat-icon"></i>
+                            <span class="stat-label">Altura</span>
+                            <span class="stat-value" id="stat-altura">--</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-bullseye stat-icon"></i>
+                            <span class="stat-label">Peso Ideal</span>
+                            <span class="stat-value" id="stat-ideal">--</span>
+                        </div>
+                    </div>
+
+                    <!-- More info link -->
+                    <a
+                        href="https://brasilescola.uol.com.br/educacao-fisica/Indice-massa-corporal-imc.htm"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="more-info-link"
+                        id="more-info-link"
+                    >
+                        <i class="fa-solid fa-book-open"></i>
+                        Saiba mais sobre o IMC
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+
                 </div>
-                    
-            </form>
 
-            
+            </section>
 
-            
         </div>
-    </section>
+
+
+
+    </main>
+
+    <script src="js/script.js" defer></script>
 </body>
 </html>
